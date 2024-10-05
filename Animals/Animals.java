@@ -32,7 +32,7 @@ public class Animals {
     }
 
     public void showInfo() {
-        System.out.println("Name: " + name + "Birthday: " + birthday + "Type: " + type);
+        System.out.println("Name: " + getName() + " | " + "Birthday: " + getBirthday() + " | " + "Type: " + getType());
     }
 
     public void showActions(){}

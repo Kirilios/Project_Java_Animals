@@ -1,4 +1,6 @@
-package Animals;
+package Animals.Pets;
+
+import Animals.Animals;
 
 public class Pets extends Animals {
 
@@ -19,12 +21,17 @@ public class Pets extends Animals {
     @Override
     public void showInfo() {
         super.showInfo();
+        showActions();
     }
 
-    public void showActions(){
+    public void showActions() {
         System.out.println("Actions: ");
-        for(String action: actions){
-            System.out.println(action);
+        if (actions != null && actions.length > 0) {
+            for (String action : actions) {
+                System.out.println("- " + action);
+            }
+        } else {
+            System.out.println("No actions available.");
         }
     }
 }
