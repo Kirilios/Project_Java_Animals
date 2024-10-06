@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da786f64-842a-4707-8483-8679c0cd055b" name="Changes" comment="new changes to animal registry and counter added">
-      <change beforePath="$PROJECT_DIR$/Animals/AnimalsRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/Animals/AnimalsRegistry.java" afterDir="false" />
-    </list>
+    <list default="true" id="da786f64-842a-4707-8483-8679c0cd055b" name="Changes" comment="new changes to animal registry and counter added" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -104,6 +102,7 @@
       <workItem from="1728069267382" duration="6969000" />
       <workItem from="1728154150044" duration="3614000" />
       <workItem from="1728243217399" duration="3614000" />
+      <workItem from="1728246859895" duration="678000" />
     </task>
     <task id="LOCAL-00001" summary="added readme file">
       <option name="closed" value="true" />
@@ -185,7 +184,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728246112278</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="new changes to animal registry and counter added">
+      <option name="closed" value="true" />
+      <created>1728247386546</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1728247386546</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

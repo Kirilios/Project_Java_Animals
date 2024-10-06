@@ -12,11 +12,10 @@ import java.util.Scanner;
 public class AnimalsRegistry {
     private static final ArrayList<Animals> animalList = new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
+    private static final AnimalCounter counter = new AnimalCounter();
 
-    //private static final AnimalCounter counter = new AnimalCounter(); //put in to use without try-with-resources
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         boolean exitMenu = false;
 
         while (!exitMenu) {
@@ -53,8 +52,8 @@ public class AnimalsRegistry {
         }
     }
 
-    public static void addAnimal() {
-        try (AnimalCounter counter = new AnimalCounter()) {
+    public static void addAnimal() throws Exception {
+        try {
             counter.markUsedInTry();
             System.out.println("Enter animal name: ");
             String name = scanner.nextLine();
