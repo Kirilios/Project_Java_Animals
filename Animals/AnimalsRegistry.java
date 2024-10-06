@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AnimalsRegistry {
-    private static ArrayList<Animals> animalList = new ArrayList<>();
-    private static Scanner scanner = new Scanner(System.in);
+    private static final ArrayList<Animals> animalList = new ArrayList<>();
+    private static final Scanner scanner = new Scanner(System.in);
+
+    private static final AnimalCounter counter = new AnimalCounter();
 
 
     public static void main(String[] args) {
@@ -42,7 +44,7 @@ public class AnimalsRegistry {
                     showAllAnimals();
                     break;
                 case 5:
-                    System.out.println("You have successfully exited the program");
+                    System.out.println("Goodbye!");
                     exitMenu = true;
                     break;
                 default:
@@ -52,56 +54,69 @@ public class AnimalsRegistry {
     }
 
     public static void addAnimal() {
-        System.out.println("Enter animal name: ");
-        String name = scanner.nextLine();
-
-        LocalDate birthday = null;
-        boolean validDate = false;
-        while (!validDate) {
-            System.out.println("Enter animal birthday (YYYY-MM-DD): ");
-        String birthdayInput = scanner.nextLine();
         try {
-            birthday = LocalDate.parse(birthdayInput, DateTimeFormatter.ISO_LOCAL_DATE);
-            validDate = true;
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid date format or impossible date. Please try again.");
+            counter.markUsedInTry();
+            System.out.println("Enter animal name: ");
+            String name = scanner.nextLine();
+
+            LocalDate birthday = null;
+            boolean validDate = false;
+            while (!validDate) {
+                System.out.println("Enter animal birthday (YYYY-MM-DD): ");
+                String birthdayInput = scanner.nextLine();
+                try {
+                    birthday = LocalDate.parse(birthdayInput, DateTimeFormatter.ISO_LOCAL_DATE);
+                    if (birthday.isAfter(LocalDate.now())) {
+                        System.out.println("Birthday cannot be in the future. Please enter a valid date.");
+                    } else {
+                        validDate = true;
+                    }
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid date format or impossible date. Please try again.");
+                }
+            }
+            System.out.println("Enter animal type (Dog/Cat/Hamster/Chicken/Horse/Donkey/Camel/Goat): ");
+            String type = scanner.nextLine().toLowerCase();
+
+            System.out.println("Enter actions (separated by commas or spaces): ");
+            String actionsInput = scanner.nextLine().toLowerCase();
+            String[] actions = actionsInput.split("\\s*,\\s*|\\s+"); // I use regular expression to avoid error in the input, before Ii tried String[] actions = actionsInput.split(" ") but it wasn't good
+
+            Animals newAnimal = null;
+
+            if (type.equals("dog") || type.equals("cat") || type.equals("hamster") || type.equals("chicken")) {
+                newAnimal = switch (type) {
+                    case "dog" -> new Dog(name, birthday.toString(), actions);
+                    case "cat" -> new Cat(name, birthday.toString(), actions);
+                    case "hamster" -> new Hamster(name, birthday.toString(), actions);
+                    case "chicken" -> new Chicken(name, birthday.toString(), actions);
+                    default -> null;
+                };
+            } else if (type.equals("horse") || type.equals("donkey") || type.equals("camel") || type.equals("goat")) {
+                newAnimal = switch (type) {
+                    case "horse" -> new Horse(name, birthday.toString(), actions);
+                    case "donkey" -> new Donkey(name, birthday.toString(), actions);
+                    case "camel" -> new Camel(name, birthday.toString(), actions);
+                    case "goat" -> new Goat(name, birthday.toString(), actions);
+                    default -> null;
+                };
+            }
+
+            if (newAnimal != null) {
+                animalList.add(newAnimal);
+                counter.add();
+                System.out.println("New animal added: ");
+                newAnimal.showInfo();
+                System.out.println("Total animals added: " + counter.getCount());
+            } else {
+                System.out.println("Error adding animal.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error : " + e.getMessage());
         }
+
     }
-        System.out.println("Enter animal type (Dog/Cat/Hamster/Chicken/Horse/Donkey/Camel/Goat): ");
-        String type = scanner.nextLine().toLowerCase();
 
-        System.out.println("Enter actions (separated by commas or spaces): ");
-        String actionsInput = scanner.nextLine();
-        String[] actions = actionsInput.split("\\s*,\\s*|\\s+"); // I use regular expression to avoid error in the input, before i tried String[] actions = actionsInput.split(" ") but it wasn't good
-
-        Animals newAnimal = null;
-
-        if (type.equals("dog") || type.equals("cat") || type.equals("hamster") || type.equals("chicken")) {
-            newAnimal = switch (type) {
-                case "dog" -> new Dog(name, birthday.toString(), actions);
-                case "cat" -> new Cat(name, birthday.toString(), actions);
-                case "hamster" -> new Hamster(name, birthday.toString(), actions);
-                case "chicken" -> new Chicken(name, birthday.toString(), actions);
-                default -> null;
-            };
-        } else if (type.equals("horse") || type.equals("donkey") || type.equals("camel") || type.equals("goat")) {
-            newAnimal = switch (type) {
-                case "horse" -> new Horse(name, birthday.toString(), actions);
-                case "donkey" -> new Donkey(name, birthday.toString(), actions);
-                case "camel" -> new Camel(name, birthday.toString(), actions);
-                case "goat" -> new Goat(name, birthday.toString(), actions);
-                default -> null;
-            };
-        }
-
-        if (newAnimal != null) {
-            animalList.add(newAnimal);
-            System.out.println("New animal added: ");
-            newAnimal.showInfo();
-        } else {
-            System.out.println("Error adding animal.");
-        }
-    }
 
     public static void listAnimalActions() {
         System.out.println("Enter animal name to see actions: ");
@@ -127,8 +142,10 @@ public class AnimalsRegistry {
 
                 if (animal instanceof Pets pet) {
                     pet.setActions(addAction(pet.getActions(), newAction));
+                    pet.showActions();
                 } else if (animal instanceof PackAnimals packAnimal) {
                     packAnimal.setActions(addAction(packAnimal.getActions(), newAction));
+                    packAnimal.showActions();
                 }
 
                 System.out.println("Animal trained successfully.");
@@ -151,6 +168,7 @@ public class AnimalsRegistry {
     }
 
 
+    @org.jetbrains.annotations.NotNull
     private static String[] addAction(String[] actions, String newAction) {
         String[] newActions = new String[actions.length + 1];
         System.arraycopy(actions, 0, newActions, 0, actions.length);
