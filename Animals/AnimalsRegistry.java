@@ -13,7 +13,7 @@ public class AnimalsRegistry {
     private static final ArrayList<Animals> animalList = new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
 
-    private static final AnimalCounter counter = new AnimalCounter();
+    //private static final AnimalCounter counter = new AnimalCounter(); //put in to use without try-with-resources
 
 
     public static void main(String[] args) {
@@ -54,7 +54,7 @@ public class AnimalsRegistry {
     }
 
     public static void addAnimal() {
-        try {
+        try (AnimalCounter counter = new AnimalCounter()) {
             counter.markUsedInTry();
             System.out.println("Enter animal name: ");
             String name = scanner.nextLine();
